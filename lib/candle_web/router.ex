@@ -4,6 +4,7 @@ defmodule CandleWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug CandleWeb.Plugs.PlayerId
     plug :fetch_live_flash
     plug :put_root_layout, {CandleWeb.LayoutView, :root}
     plug :protect_from_forgery
@@ -18,6 +19,7 @@ defmodule CandleWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+    live "/new", NewGameLive, :index
   end
 
   # Other scopes may use custom stacks.
