@@ -40,13 +40,14 @@ defmodule Candle.Game.State do
 
   defp public_view(state) do
     state
-    |> Map.from_struct()
-    |> Map.drop([:clients])
+    |> Map.put(:clients, [])
     |> Map.update!(:admin, &Candle.Game.Player.filter_private/1)
-    |> Map.update!(:players, fn player ->
-      Enum.map(player, &Candle.Game.Player.filter_private/1)
+    |> Map.update!(:players, fn players ->
+      Enum.map(players, &Candle.Game.Player.filter_private/1)
     end)
-    |> Map.update!(:lobby, fn player -> Enum.map(player, &Candle.Game.Player.filter_private/1) end)
+    |> Map.update!(:lobby, fn players ->
+      Enum.map(players, &Candle.Game.Player.filter_private/1)
+    end)
   end
 
   defp admin_view(state) do

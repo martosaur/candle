@@ -2,13 +2,16 @@ defmodule Candle.Game.Server do
   use GenServer
 
   # Client
+  def new(admin, "") do
+    new(admin, "New Game")
+  end
 
-  def new(admin) do
+  def new(admin, name) do
     game_id = new_game_id()
 
     GenServer.start(
       __MODULE__,
-      %Candle.Game.State{game_id: new_game_id(), admin: admin},
+      %Candle.Game.State{game_id: new_game_id(), admin: admin, name: name},
       name: {:via, Registry, {Candle.GameRegistry, game_id}}
     )
     |> case do

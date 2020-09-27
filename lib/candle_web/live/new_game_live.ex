@@ -8,8 +8,8 @@ defmodule CandleWeb.NewGameLive do
   end
 
   @impl true
-  def handle_event("create", _params, socket) do
-    Candle.Game.Server.new(socket.assigns.player)
+  def handle_event("create", %{"game" => %{"name" => name}}, socket) do
+    Candle.Game.Server.new(socket.assigns.player, name)
     |> case do
       {:ok, game_id} -> {:noreply, redirect(socket, to: "/games/#{game_id}")}
       {:error, reason} -> {:noreply, put_flash(socket, :error, "Could not create game")}
