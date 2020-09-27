@@ -12,9 +12,9 @@ defmodule Candle.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Candle.PubSub},
       # Start the Endpoint (http/https)
-      CandleWeb.Endpoint
+      CandleWeb.Endpoint,
       # Start a worker by calling: Candle.Worker.start_link(arg)
-      # {Candle.Worker, arg}
+      {Registry, keys: :unique, name: Candle.GameRegistry}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

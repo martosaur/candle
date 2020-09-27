@@ -20,6 +20,7 @@ defmodule CandleWeb.Router do
 
     live "/", PageLive, :index
     live "/new", NewGameLive, :index
+    live "/games/:id", GameLive, :show
   end
 
   # Other scopes may use custom stacks.
