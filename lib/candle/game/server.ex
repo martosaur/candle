@@ -3,13 +3,13 @@ defmodule Candle.Game.Server do
 
   # Client
 
-  def new(admin_id) do
+  def new(admin) do
     game_id = new_game_id()
 
     GenServer.start(
       __MODULE__,
-      %Candle.Game.State{game_id: new_game_id(), admin_id: admin_id},
-      name: {:via, Registry, {Candle.GameRegistry, game_id, admin_id}}
+      %Candle.Game.State{game_id: new_game_id(), admin: admin},
+      name: {:via, Registry, {Candle.GameRegistry, game_id}}
     )
     |> case do
       {:ok, _} -> {:ok, game_id}
@@ -17,11 +17,10 @@ defmodule Candle.Game.Server do
     end
   end
 
-  def join_game(game_id, player_id) do
+  def join_game(game_id, player) do
     [{pid, _admin_id}] = Registry.lookup(Candle.GameRegistry, game_id)
-    new_state = GenServer.call(pid, {:join, player_id})
+    GenServer.call(pid, {:join, player})
     Process.monitor(pid)
-    new_state
   end
 
   defp new_game_id() do
@@ -38,15 +37,15 @@ defmodule Candle.Game.Server do
   end
 
   @impl true
-  def handle_call({:join, player_id}, {pid, _}, state) do
-    new_state = Candle.Game.State.join(state, player_id, pid)
+  def handle_call({:join, player}, {pid, _}, state) do
+    new_state = Candle.Game.State.join(state, player, pid)
     Process.monitor(pid)
     {:reply, new_state, new_state, {:continue, :push_update}}
   end
 
   @impl true
   def handle_info({:DOWN, _ref, :process, pid, _reason}, state) do
-    {:noreply, Candle.Game.State.player_down(state, pid), {:continue, :push_update}}
+    {:noreply, Candle.Game.State.client_down(state, pid), {:continue, :push_update}}
   end
 
   @impl true

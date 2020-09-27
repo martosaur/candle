@@ -4,7 +4,7 @@ defmodule CandleWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug CandleWeb.Plugs.PlayerId
+    plug CandleWeb.Plugs.PlayerSession
     plug :fetch_live_flash
     plug :put_root_layout, {CandleWeb.LayoutView, :root}
     plug :protect_from_forgery

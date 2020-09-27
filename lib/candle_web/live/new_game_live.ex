@@ -3,13 +3,13 @@ defmodule CandleWeb.NewGameLive do
   require Logger
 
   @impl true
-  def mount(_params, %{"player_id" => player_id}, socket) do
-    {:ok, assign(socket, player_id: player_id)}
+  def mount(_params, %{"player" => player}, socket) do
+    {:ok, assign(socket, player: player)}
   end
 
-  @impl
+  @impl true
   def handle_event("create", _params, socket) do
-    Candle.Game.Server.new(socket.assigns.player_id)
+    Candle.Game.Server.new(socket.assigns.player)
     |> case do
       {:ok, game_id} -> {:noreply, redirect(socket, to: "/games/#{game_id}")}
       {:error, reason} -> {:noreply, put_flash(socket, :error, "Could not create game")}
