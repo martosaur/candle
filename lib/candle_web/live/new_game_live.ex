@@ -12,7 +12,7 @@ defmodule CandleWeb.NewGameLive do
     Candle.Game.Server.new(socket.assigns.player, name)
     |> case do
       {:ok, game_id} -> {:noreply, redirect(socket, to: "/games/#{game_id}")}
-      {:error, reason} -> {:noreply, put_flash(socket, :error, "Could not create game")}
+      {:error, _reason} -> {:noreply, put_flash(socket, :error, "Could not create game")}
     end
   end
 end

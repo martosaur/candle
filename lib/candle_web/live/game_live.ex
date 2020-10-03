@@ -1,11 +1,12 @@
 defmodule CandleWeb.GameLive do
   use CandleWeb, :live_view
+  alias Candle.Game.Server
   require Logger
 
   @impl true
   def mount(%{"id" => game_id}, %{"player" => player}, socket) do
     game_id = String.to_integer(game_id)
-    Candle.Game.Server.join_game(game_id, player)
+    Server.join_game(game_id, player)
 
     {:ok,
      assign(
@@ -13,6 +14,27 @@ defmodule CandleWeb.GameLive do
        game_state: nil,
        player: player
      )}
+  end
+
+  @impl true
+  def handle_event("add_player", %{"player_id" => player_id}, socket) do
+    Server.add_player(
+      socket.assigns.game_state.game_id,
+      player_id,
+      socket.assigns.player
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("remove_player", %{"player_id" => player_id}, socket) do
+    Server.remove_player(
+      socket.assigns.game_state.game_id,
+      player_id,
+      socket.assigns.player
+    )
+
+    {:noreply, socket}
   end
 
   @impl true

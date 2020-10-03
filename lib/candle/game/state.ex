@@ -6,7 +6,10 @@ defmodule Candle.Game.State do
             admin: nil,
             players: [],
             lobby: [],
-            clients: []
+            clients: [],
+            package: nil
+
+  alias Candle.Game.Player
 
   def join(state, player, pid) do
     %{state | clients: [{player, pid} | state.clients]}
@@ -28,6 +31,20 @@ defmodule Candle.Game.State do
     %{state | lobby: lobby}
   end
 
+  def add_player(state, player_id) do
+    player = Enum.find(state.lobby, fn %{id: pid} -> pid == player_id end)
+
+    new_players =
+      [Player.filter_private(player) | state.players] |> Enum.uniq_by(fn %{id: id} -> id end)
+
+    %{state | players: new_players}
+  end
+
+  def remove_player(state, player_id) do
+    new_players = Enum.reject(state.players, fn %{id: id} -> id == player_id end)
+    %{state | players: new_players}
+  end
+
   def push_state_to_clients(%__MODULE__{admin: %{id: admin_id}} = state) do
     Enum.map(
       state.clients,
@@ -41,12 +58,12 @@ defmodule Candle.Game.State do
   defp public_view(state) do
     state
     |> Map.put(:clients, [])
-    |> Map.update!(:admin, &Candle.Game.Player.filter_private/1)
+    |> Map.update!(:admin, &Player.filter_private/1)
     |> Map.update!(:players, fn players ->
-      Enum.map(players, &Candle.Game.Player.filter_private/1)
+      Enum.map(players, &Player.filter_private/1)
     end)
     |> Map.update!(:lobby, fn players ->
-      Enum.map(players, &Candle.Game.Player.filter_private/1)
+      Enum.map(players, &Player.filter_private/1)
     end)
   end
 
