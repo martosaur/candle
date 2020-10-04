@@ -1,6 +1,10 @@
 defmodule Candle.Game.Server do
   use GenServer
 
+  require Logger
+
+  alias Candle.Game.State
+
   # Client
   def new(admin, "") do
     new(admin, "New Game")
@@ -33,12 +37,22 @@ defmodule Candle.Game.Server do
 
   def add_player(game_id, player_id, actor) do
     pid = pid_by_game_id(game_id)
-    GenServer.call(pid, {:add_player, player_id, actor.secret})
+    GenServer.cast(pid, {:add_player, player_id, actor.secret})
   end
 
   def remove_player(game_id, player_id, actor) do
     pid = pid_by_game_id(game_id)
-    GenServer.call(pid, {:remove_player, player_id, actor.secret})
+    GenServer.cast(pid, {:remove_player, player_id, actor.secret})
+  end
+
+  def start_game(game_id, actor) do
+    pid = pid_by_game_id(game_id)
+    GenServer.cast(pid, {:start_game, actor.secret})
+  end
+
+  def next_question(game_id, actor) do
+    pid = pid_by_game_id(game_id)
+    GenServer.cast(pid, {:next_question, actor.secret})
   end
 
   defp new_game_id() do
@@ -67,27 +81,52 @@ defmodule Candle.Game.Server do
   end
 
   @impl true
-  def handle_call({:add_player, player_id, admin_secret}, _, state) do
-    new_state =
-      if admin_secret == state.admin.secret do
-        Candle.Game.State.add_player(state, player_id)
-      else
-        state
-      end
+  def handle_cast(
+        {:add_player, player_id, admin_secret},
+        %State{admin: %{secret: admin_secret}} = state
+      ) do
+    new_state = Candle.Game.State.add_player(state, player_id)
 
-    {:reply, new_state, new_state, {:continue, :push_update}}
+    {:noreply, new_state, {:continue, :push_update}}
   end
 
   @impl true
-  def handle_call({:remove_player, player_id, admin_secret}, _, state) do
-    new_state =
-      if admin_secret == state.admin.secret do
-        Candle.Game.State.remove_player(state, player_id)
-      else
-        state
-      end
+  def handle_cast(
+        {:remove_player, player_id, admin_secret},
+        %State{admin: %{secret: admin_secret}} = state
+      ) do
+    new_state = Candle.Game.State.remove_player(state, player_id)
 
-    {:reply, new_state, new_state, {:continue, :push_update}}
+    {:noreply, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast(
+        {:start_game, admin_secret},
+        %State{stage: :lobby, admin: %{secret: admin_secret}} = state
+      ) do
+    Process.send_after(self(), {:"$gen_cast", {:next_question, admin_secret}}, 3_000)
+    new_state = Candle.Game.State.start_game(state)
+
+    {:noreply, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast({:next_question, admin_secret}, %State{admin: %{secret: admin_secret}} = state) do
+    new_state = Candle.Game.State.next_question(state)
+
+    {:noreply, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast(message, state) do
+    Logger.error(
+      "Unhandled cast message in Game.Server process: #{inspect(message)}. State: #{
+        inspect(state)
+      }"
+    )
+
+    {:noreply, state}
   end
 
   @impl true

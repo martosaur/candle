@@ -4,9 +4,4 @@ defmodule Candle.Game.Player do
   defstruct name: "Anonymous",
             id: nil,
             secret: nil
-
-  def filter_private(%__MODULE__{} = player) do
-    player
-    |> Map.put(:secret, nil)
-  end
 end

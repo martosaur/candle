@@ -7,9 +7,15 @@ defmodule Candle.Game.State do
             players: [],
             lobby: [],
             clients: [],
-            package: nil
+            package: nil,
+            stage: :lobby,
+            current_topic: nil,
+            current_question: nil
+
+  @stages [:lobby, :starting, :pause, :question, :pending_answer, :results]
 
   alias Candle.Game.Player
+  alias Candle.Package.{Question, Topic}
 
   def join(state, player, pid) do
     %{state | clients: [{player, pid} | state.clients]}
@@ -34,10 +40,13 @@ defmodule Candle.Game.State do
   def add_player(state, player_id) do
     player = Enum.find(state.lobby, fn %{id: pid} -> pid == player_id end)
 
-    new_players =
-      [Player.filter_private(player) | state.players] |> Enum.uniq_by(fn %{id: id} -> id end)
+    new_players = [player | state.players] |> Enum.uniq_by(fn %{id: id} -> id end)
 
     %{state | players: new_players}
+  end
+
+  def start_game(%__MODULE__{stage: :lobby} = state) do
+    %{state | stage: :starting}
   end
 
   def remove_player(state, player_id) do
@@ -45,29 +54,47 @@ defmodule Candle.Game.State do
     %{state | players: new_players}
   end
 
+  # next question
+  def next_question(
+        %__MODULE__{
+          current_topic: %Topic{questions: [current_question | other_questions]}
+        } = state
+      ) do
+    state
+    |> Map.put(:current_question, current_question)
+    |> Map.update!(:current_topic, fn t -> %{t | questions: other_questions} end)
+    |> Map.put(:stage, :question)
+  end
+
+  # next topic
+  def next_question(
+        %__MODULE__{
+          package: %Candle.Package{
+            topics: [current_topic | other_topics]
+          }
+        } = state
+      ) do
+    state
+    |> Map.put(:current_topic, current_topic)
+    |> Map.update!(:package, fn p -> %{p | topics: other_topics} end)
+    |> next_question()
+  end
+
+  # out of questions
+  def next_question(state) do
+    state
+    |> Map.put(:current_question, nil)
+    |> Map.put(:current_topic, nil)
+    |> Map.put(:stage, :results)
+  end
+
   def push_state_to_clients(%__MODULE__{admin: %{id: admin_id}} = state) do
     Enum.map(
       state.clients,
       fn
-        {%{id: ^admin_id}, pid} -> GenServer.cast(pid, {:server_update, admin_view(state)})
-        {_, pid} -> GenServer.cast(pid, {:server_update, public_view(state)})
+        {%{id: ^admin_id}, pid} -> GenServer.cast(pid, {:server_update, state, true})
+        {_, pid} -> GenServer.cast(pid, {:server_update, state, false})
       end
     )
-  end
-
-  defp public_view(state) do
-    state
-    |> Map.put(:clients, [])
-    |> Map.update!(:admin, &Player.filter_private/1)
-    |> Map.update!(:players, fn players ->
-      Enum.map(players, &Player.filter_private/1)
-    end)
-    |> Map.update!(:lobby, fn players ->
-      Enum.map(players, &Player.filter_private/1)
-    end)
-  end
-
-  defp admin_view(state) do
-    public_view(state)
   end
 end

@@ -12,7 +12,8 @@ defmodule CandleWeb.GameLive do
      assign(
        socket,
        game_state: nil,
-       player: player
+       player: player,
+       is_admin: false
      )}
   end
 
@@ -37,12 +38,30 @@ defmodule CandleWeb.GameLive do
     {:noreply, socket}
   end
 
+  def handle_event("start_game", _, socket) do
+    Server.start_game(
+      socket.assigns.game_state.game_id,
+      socket.assigns.player
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("next_question", _, socket) do
+    Server.next_question(
+      socket.assigns.game_state.game_id,
+      socket.assigns.player
+    )
+
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket) do
     {:noreply, redirect(socket, to: "/games/#{socket.assigns.game_state.game_id}")}
   end
 
-  def handle_cast({:server_update, game_state}, socket) do
-    {:noreply, assign(socket, game_state: game_state)}
+  def handle_cast({:server_update, game_state, is_admin}, socket) do
+    {:noreply, assign(socket, game_state: game_state, is_admin: is_admin)}
   end
 end
