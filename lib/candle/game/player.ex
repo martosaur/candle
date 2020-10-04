@@ -3,5 +3,6 @@ defmodule Candle.Game.Player do
   @enforce_keys [:id, :secret]
   defstruct name: "Anonymous",
             id: nil,
-            secret: nil
+            secret: nil,
+            score: 0
 end

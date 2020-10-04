@@ -56,6 +56,42 @@ defmodule CandleWeb.GameLive do
     {:noreply, socket}
   end
 
+  def handle_event("clap", _, socket) do
+    Server.clap(
+      socket.assigns.game_state.game_id,
+      socket.assigns.player
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("answer_correct", _, socket) do
+    Server.answer_correct(
+      socket.assigns.game_state.game_id,
+      socket.assigns.player
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("answer_incorrect", _, socket) do
+    Server.answer_incorrect(
+      socket.assigns.game_state.game_id,
+      socket.assigns.player
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("no_answer", _, socket) do
+    Server.no_answer(
+      socket.assigns.game_state.game_id,
+      socket.assigns.player
+    )
+
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket) do
     {:noreply, redirect(socket, to: "/games/#{socket.assigns.game_state.game_id}")}

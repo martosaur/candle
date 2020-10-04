@@ -15,7 +15,7 @@ defmodule Candle.Game.Server do
 
     GenServer.start(
       __MODULE__,
-      %Candle.Game.State{
+      %State{
         game_id: new_game_id(),
         admin: admin,
         name: name,
@@ -55,6 +55,26 @@ defmodule Candle.Game.Server do
     GenServer.cast(pid, {:next_question, actor.secret})
   end
 
+  def clap(game_id, actor) do
+    pid = pid_by_game_id(game_id)
+    GenServer.cast(pid, {:clap, actor.secret})
+  end
+
+  def answer_correct(game_id, actor) do
+    pid = pid_by_game_id(game_id)
+    GenServer.cast(pid, {:answer_correct, actor.secret})
+  end
+
+  def answer_incorrect(game_id, actor) do
+    pid = pid_by_game_id(game_id)
+    GenServer.cast(pid, {:answer_incorrect, actor.secret})
+  end
+
+  def no_answer(game_id, actor) do
+    pid = pid_by_game_id(game_id)
+    GenServer.cast(pid, {:no_answer, actor.secret})
+  end
+
   defp new_game_id() do
     Registry.select(Candle.GameRegistry, [{{:"$1", :_, :_}, [], [:"$1"]}])
     |> Enum.max(fn -> 0 end)
@@ -75,7 +95,7 @@ defmodule Candle.Game.Server do
 
   @impl true
   def handle_call({:join, player}, {pid, _}, state) do
-    new_state = Candle.Game.State.join(state, player, pid)
+    new_state = State.join(state, player, pid)
     Process.monitor(pid)
     {:reply, new_state, new_state, {:continue, :push_update}}
   end
@@ -85,7 +105,7 @@ defmodule Candle.Game.Server do
         {:add_player, player_id, admin_secret},
         %State{admin: %{secret: admin_secret}} = state
       ) do
-    new_state = Candle.Game.State.add_player(state, player_id)
+    new_state = State.add_player(state, player_id)
 
     {:noreply, new_state, {:continue, :push_update}}
   end
@@ -95,7 +115,7 @@ defmodule Candle.Game.Server do
         {:remove_player, player_id, admin_secret},
         %State{admin: %{secret: admin_secret}} = state
       ) do
-    new_state = Candle.Game.State.remove_player(state, player_id)
+    new_state = State.remove_player(state, player_id)
 
     {:noreply, new_state, {:continue, :push_update}}
   end
@@ -106,14 +126,51 @@ defmodule Candle.Game.Server do
         %State{stage: :lobby, admin: %{secret: admin_secret}} = state
       ) do
     Process.send_after(self(), {:"$gen_cast", {:next_question, admin_secret}}, 3_000)
-    new_state = Candle.Game.State.start_game(state)
+    new_state = State.start_game(state)
 
     {:noreply, new_state, {:continue, :push_update}}
   end
 
   @impl true
   def handle_cast({:next_question, admin_secret}, %State{admin: %{secret: admin_secret}} = state) do
-    new_state = Candle.Game.State.next_question(state)
+    new_state = State.next_question(state)
+
+    {:noreply, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast({:clap, player_secret}, %State{stage: :question} = state) do
+    new_state = State.clap(state, player_secret)
+
+    {:noreply, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast(
+        {:answer_correct, admin_secret},
+        %State{stage: :pending_answer, admin: %{secret: admin_secret}} = state
+      ) do
+    new_state = State.answer_correct(state)
+
+    {:noreply, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast(
+        {:answer_incorrect, admin_secret},
+        %State{stage: :pending_answer, admin: %{secret: admin_secret}} = state
+      ) do
+    new_state = State.answer_incorrect(state)
+
+    {:noreply, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast(
+        {:no_answer, admin_secret},
+        %State{stage: :pending_answer, admin: %{secret: admin_secret}} = state
+      ) do
+    new_state = State.no_answer(state)
 
     {:noreply, new_state, {:continue, :push_update}}
   end
@@ -131,12 +188,12 @@ defmodule Candle.Game.Server do
 
   @impl true
   def handle_info({:DOWN, _ref, :process, pid, _reason}, state) do
-    {:noreply, Candle.Game.State.client_down(state, pid), {:continue, :push_update}}
+    {:noreply, State.client_down(state, pid), {:continue, :push_update}}
   end
 
   @impl true
   def handle_continue(:push_update, state) do
-    Candle.Game.State.push_state_to_clients(state)
+    State.push_state_to_clients(state)
     {:noreply, state}
   end
 end

@@ -10,12 +10,13 @@ defmodule Candle.Game.State do
             package: nil,
             stage: :lobby,
             current_topic: nil,
-            current_question: nil
+            current_question: nil,
+            active_player_id: nil
 
   @stages [:lobby, :starting, :pause, :question, :pending_answer, :results]
 
+  alias Candle.Package.{Topic}
   alias Candle.Game.Player
-  alias Candle.Package.{Question, Topic}
 
   def join(state, player, pid) do
     %{state | clients: [{player, pid} | state.clients]}
@@ -86,6 +87,59 @@ defmodule Candle.Game.State do
     |> Map.put(:current_question, nil)
     |> Map.put(:current_topic, nil)
     |> Map.put(:stage, :results)
+  end
+
+  def clap(%__MODULE__{players: players} = state, player_secret) do
+    players
+    |> Enum.find(nil, fn p -> p.secret == player_secret end)
+    |> case do
+      nil -> state
+      %Player{id: id} -> %{state | active_player_id: id, stage: :pending_answer}
+    end
+  end
+
+  def answer_correct(
+        %__MODULE__{
+          players: players,
+          active_player_id: player_id,
+          current_question: %{reward: reward}
+        } = state
+      ) do
+    updated_players =
+      Enum.map(players, fn
+        %Player{id: ^player_id} = p -> %{p | score: p.score + reward}
+        p -> p
+      end)
+
+    state
+    |> Map.put(:players, updated_players)
+    |> Map.put(:active_player_id, nil)
+    |> next_question()
+  end
+
+  def answer_incorrect(
+        %__MODULE__{
+          players: players,
+          active_player_id: player_id,
+          current_question: %{reward: reward}
+        } = state
+      ) do
+    updated_players =
+      Enum.map(players, fn
+        %Player{id: ^player_id} = p -> %{p | score: p.score - reward}
+        p -> p
+      end)
+
+    state
+    |> Map.put(:players, updated_players)
+    |> Map.put(:active_player_id, nil)
+    |> Map.put(:stage, :question)
+  end
+
+  def no_answer(state) do
+    state
+    |> Map.put(:active_player_id, nil)
+    |> Map.put(:stage, :question)
   end
 
   def push_state_to_clients(%__MODULE__{admin: %{id: admin_id}} = state) do
