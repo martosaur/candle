@@ -1,12 +1,10 @@
-<section class="text-gray-700 body-font">
-  <div class="container px-5 py-24 mx-auto">
-    <div class="flex flex-col text-center w-full mb-12">
-      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Create New Game</h1>
-      <p class="lg:w-2/3 mx-auto leading-relaxed text-base invisible"></p>
-    </div>
-    <%= f = form_for :game, "#", [phx_submit: "create", class: "flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:px-0"] %>
-        <%= text_input f, :name, [class: "flex-grow w-full bg-gray-100 rounded border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2 mr-4 mb-4 sm:mb-0"] %>
-        <%= submit "Create", [class: "text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"] %>
+<section class="section">
+  <div class="container">
+      <h1 class="title">Create New Game</h1>
+
+    <%= f = form_for :game, "#", [phx_submit: "create", class: ""] %>
+        <%= text_input f, :name, [class: ""] %>
+        <%= submit "Create", [class: ""] %>
     </form>
   </div>
 </section>

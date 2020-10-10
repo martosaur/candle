@@ -19,7 +19,6 @@ defmodule CandleWeb.Router do
     pipe_through :browser
 
     live "/", NewGameLive, :index
-    live "/new", NewGameLive, :index
     live "/games/:id", GameLive, :show
   end
 

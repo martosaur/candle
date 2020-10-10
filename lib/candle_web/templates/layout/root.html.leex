@@ -3,32 +3,30 @@
   <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tag() %>
     <%= live_title_tag assigns[:page_title] || "Candle" %>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
   </head>
   <body>
-    <header class="text-gray-700 body-font">
-      <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-        <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-          </svg>
-          <span class="ml-3 text-xl">Candle</span>
-        </a>
-        <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
-          <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "mr-5 hover:text-gray-900"%>
-          <% end %>
-        </nav>
-        <button class="inline-flex items-center bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-base mt-4 md:mt-0">New Game
-          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
-        </button>
-      </div>
+    <header class="">
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand has-background-grey-dark">
+          <a class="navbar-item has-text-grey-lighter" href="/">
+            Candle
+          </a>
+        </div>
+        <div class="navbar-menu">
+          <div class="navbar-start">
+            <%= link "New Game", to: Routes.new_game_path(@conn, :index), class: "navbar-item"%>
+            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+              <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "navbar-item"%>
+            <% end %>
+          </div>
+        </div>
+      </nav >
     </header>
     <%= @inner_content %>
   </body>
