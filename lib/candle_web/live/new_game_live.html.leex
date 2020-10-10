@@ -1,10 +1,21 @@
-<section class="section">
-  <div class="container">
-      <h1 class="title">Create New Game</h1>
-
-    <%= f = form_for :game, "#", [phx_submit: "create", class: ""] %>
-        <%= text_input f, :name, [class: ""] %>
-        <%= submit "Create", [class: ""] %>
-    </form>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="column is-6 is-offset-3">
+        <h1 class="title">Create New Game</h1>
+        <div class="box">
+          <%= f = form_for :game, "#", [phx_submit: "create", class: ""] %>
+            <div class="field has-addons">
+              <div class="control">
+                <%= text_input f, :name, [class: "input is-medium", placeholder: "Name"] %>
+              </div>
+              <div class="control">
+                <%= submit "Create", [class: "button is-medium"] %>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
