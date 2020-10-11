@@ -1,59 +1,213 @@
 <div class="columns">
   <%= if @game_state do %>
     <div class="column is-three-quarters" id="game">
-        <%= @game_state.name %>
-        Questions Will Appear Here
-        <%= if @is_admin do %>
-          <%= case @game_state.stage do %>
-          <% :lobby -> %> <div><button phx-click="start_game">START GAME</button></div>
-          <% :starting -> %> <div>GAME STARTING</div>
-          <% :question -> %>
-            <div>
-              <p>Topic: <%= @game_state.current_topic.name %></p>
-              <p>Question: <%= @game_state.current_question.text %></p>
-              <p>Answer: <%= @game_state.current_question.answer %></p>
-              <p>Reward: <%= @game_state.current_question.reward %></p>
+      <div class="hero">
+        <div class="hero-body">
+          <div class="columns">
+            <%= for player <- @game_state.players do %>
+              <%= if player.id == @game_state.active_player_id  do %>
+                <div class="column">
+                  <div class="tags has-addons are-large">
+                    <span class="tag is-info"><%= player.name %></span>
+                    <span class="tag is-primary"><%= player.score %></span>
+                    <a class="tag is-danger is-light" phx-click="remove_player" phx-value-player_id="<%= player.id %>">X</a>
+                  </div>
+                </div>
+              <% else %>
+                <div class="column">
+                  <div class="tags has-addons are-large">
+                    <span class="tag is-info is-light"><%= player.name %></span>
+                    <span class="tag is-primary is-light"><%= player.score %></span>
+                    <a class="tag is-danger is-light" phx-click="remove_player" phx-value-player_id="<%= player.id %>">X</a>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <%= if @is_admin do %>
+        <%= case @game_state.stage do %>
+        <% :lobby -> %>
+          <div class="hero">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle">Add players from Lobby and start the game when ready</p>
+              <button class="button is-danger" phx-click="start_game">Start Game</button>
             </div>
-            <div><button phx-click="next_question">NEXT_QUESTION</button></div>
-          <% :pending_answer -> %>
-            <div>
-              <p>Now answering: <%= @game_state.active_player_id %></p>
+          </div>
+        <% :starting -> %>
+          <div class="hero">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle">Add players from Lobby and start the game when ready</p>
+              <button class="button is-danger is-loading">Start Game</button>
             </div>
-            <div><button phx-click="answer_correct">ANSWER IS CORRECT</button></div>
-            <div><button phx-click="answer_incorrect">ANSWER IS INCORRECT</button></div>
-            <div><button phx-click="no_answer">NO ANSWER</button></div>
-          <% :results -> %>
-            <div>
-              <p>GAME OVER</p>
+          </div>
+        <% :question -> %>
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title is-centered"><%= @game_state.current_topic.name %> <%= @game_state.current_question.reward %></p>
             </div>
-          <% end %>
-        <% else %>
-          <%= case @game_state.stage do %>
-          <% :lobby -> %> <div>Waiting for host to start the game</div>
-          <% :starting -> %> <div>GAME STARTING</div>
-          <% :question -> %>
-            <div>
-              <p>Topic: <%= @game_state.current_topic.name %></p>
-              <p>Reward: <%= @game_state.current_question.reward %></p>
+            <div class="card-content">
+              <div class="content">
+                <p><%= @game_state.current_question.text %></p>
+                <p><i><%= @game_state.current_question.answer %></i></p>
+              </div>
             </div>
-            <div><button phx-click="clap">CLAP</button></div>
-          <% :pending_answer -> %>
-            <div>
-              <p>Now answering: <%= @game_state.active_player_id %></p>
+          </div>
+          <div class="hero is-light">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle"><%= @game_state.package.name %></p>
+              <button class="button is-info" phx-click="next_question">Next Question</button>
             </div>
-          <% :results -> %>
-            <div>
-              <p>GAME OVER</p>
+          </div>
+        <% :pending_answer -> %>
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title is-centered"><%= @game_state.current_topic.name %> <%= @game_state.current_question.reward %></p>
             </div>
-          <% end %>
+            <div class="card-content">
+              <div class="content">
+                <p><%= @game_state.current_question.text %></p>
+                <p><i><%= @game_state.current_question.answer %></i></p>
+              </div>
+              <div class="hero is-warning">
+                <div class="hero-body">
+                  <p class="title"><%= Enum.find(@game_state.players, fn p -> p.id == @game_state.active_player_id end) |> Map.get(:name) %>, your answer?</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="card-footer-item">
+                <button class="button is-success" phx-click="answer_correct">Answer is correct</button>
+              </div>
+              <div class="card-footer-item">
+                <button class="button is-danger" phx-click="answer_incorrect">Answer is incorrect</button>
+              </div>
+              <div class="card-footer-item">
+                <button class="button no_answer" phx-click="no_answer">No answer</button>
+              </div>
+            </div>
+          </div>
+          <div class="hero is-light">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle"><%= @game_state.package.name %></p>
+              <button class="button is-info" phx-click="next_question">Next Question</button>
+            </div>
+          </div>
+        <% :results -> %>
+          <div class="hero is-success">
+            <div class="hero-body">
+              <p class="title">Results</p>
+              <div class="content">
+                <div class="content">
+                  <%= for player <- @game_state.players do %>
+                    <p class="is-size-4"><%= player.name %>: <%= player.score %></p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero is-light">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle"><%= @game_state.package.name %></p>
+            </div>
+          </div>
         <% end %>
-        <%= for player <- @game_state.players do %>
-          <h2 class="text-gray-900 title-font font-medium"><%= player.name %></h2>
-          <p class="text-gray-500">Score: <%= player.score %></p>
-          <button phx-click="remove_player" phx-value-player_id="<%= player.id %>">remove player</button>
+      <% else %>
+        <%= case @game_state.stage do %>
+        <% :lobby -> %>
+          <div class="hero">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle">Host: <%= @game_state.admin.name %></p>
+              <p>Waiting for host to start the game...</p>
+            </div>
+          </div>
+        <% :starting -> %>
+          <div class="hero">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle">Host: <%= @game_state.admin.name %></p>
+              <p>Game starting...</p>
+            </div>
+          </div>
+        <% :question -> %>
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title is-centered"><%= @game_state.current_topic.name %> <%= @game_state.current_question.reward %></p>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <p>Please listen to the question and clap whenever you feel ready</p>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="card-footer-item">
+                <button class="button is-danger is-large is-fullwidth" phx-click="clap">I know!</button>
+              </div>
+            </div>
+          </div>
+          <div class="hero is-light">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle"><%= @game_state.package.name %></p>
+            </div>
+          </div>
+        <% :pending_answer -> %>
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title is-centered"><%= @game_state.current_topic.name %> <%= @game_state.current_question.reward %></p>
+            </div>
+            <div class="card-content">
+              <%= if @player.id == @game_state.active_player_id do %>
+                <div class="hero is-danger">
+                  <div class="hero-body">
+                    <p class="title">Your answer</p>
+                  </div>
+                </div>
+              <% else %>
+                <div class="hero is-warning">
+                  <div class="hero-body">
+                    <p class="title"><%= Enum.find(@game_state.players, fn p -> p.id == @game_state.active_player_id end) |> Map.get(:name) %>, your answer?</p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="hero is-light">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle"><%= @game_state.package.name %></p>
+            </div>
+          </div>
+        <% :results -> %>
+          <div class="hero is-success">
+            <div class="hero-body">
+              <p class="title">Results</p>
+              <div class="content">
+                <div class="content">
+                  <%= for player <- @game_state.players do %>
+                    <p class="is-size-4"><%= player.name %>: <%= player.score %></p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero is-light">
+            <div class="hero-body">
+              <h1 class="title"><%= @game_state.name %></h1>
+              <p class="subtitle"><%= @game_state.package.name %></p>
+            </div>
+          </div>
         <% end %>
+      <% end %>
     </div>
-    <div class="column" id="lobby">
+    <div class="section" id="lobby">
       <div class="container">
         <table class="table is-striped is-hoverable is-fullwidth">
           <thead>
