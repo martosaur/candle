@@ -75,6 +75,11 @@ defmodule Candle.Game.Server do
     GenServer.cast(pid, {:no_answer, actor.secret})
   end
 
+  def fetch_package(game_id) do
+    pid = pid_by_game_id(game_id)
+    GenServer.call(pid, :fetch_package)
+  end
+
   defp new_game_id() do
     Registry.select(Candle.GameRegistry, [{{:"$1", :_, :_}, [], [:"$1"]}])
     |> Enum.max(fn -> 0 end)
@@ -98,6 +103,15 @@ defmodule Candle.Game.Server do
     new_state = State.join(state, player, pid)
     Process.monitor(pid)
     {:reply, new_state, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_call(:fetch_package, _, state) do
+    package =
+      Candle.Package.Fetcher.fetch_random_package()
+      |> Candle.Package.Parser.html_to_package()
+
+    {:reply, :ok, %{state | package: package}, {:continue, :push_update}}
   end
 
   @impl true

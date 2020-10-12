@@ -35,7 +35,7 @@ defmodule Candle.MixProject do
     [
       {:phoenix, "~> 1.5.5"},
       {:phoenix_live_view, "~> 0.14.0"},
-      {:floki, ">= 0.0.0", only: :test},
+      {:floki, "~> 0.29.0"},
       {:phoenix_html, "~> 2.14"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.2.8"},
@@ -43,7 +43,8 @@ defmodule Candle.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:httpoison, "~> 1.7"}
     ]
   end
 
