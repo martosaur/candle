@@ -60,6 +60,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
+              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
               <button class="button is-info" phx-click="next_question">Next Question</button>
             </div>
           </div>
@@ -95,6 +96,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
+              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
               <button class="button is-info" phx-click="next_question">Next Question</button>
             </div>
           </div>
@@ -115,6 +117,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
+              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
             </div>
           </div>
         <% end %>
@@ -146,16 +149,19 @@
                 <p>Please listen to the question and clap whenever you feel ready</p>
               </div>
             </div>
-            <div class="card-footer">
-              <div class="card-footer-item">
-                <button class="button is-danger is-large is-fullwidth" phx-click="clap">I know!</button>
+            <%= if Enum.any?(@game_state.players, fn player -> @player.id == player.id end) do %>
+              <div class="card-footer">
+                <div class="card-footer-item">
+                  <button class="button is-danger is-large is-fullwidth" phx-click="clap">I know!</button>
+                </div>
               </div>
-            </div>
+            <% end %>
           </div>
           <div class="hero is-light">
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
+              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
             </div>
           </div>
         <% :pending_answer -> %>
@@ -183,6 +189,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
+              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
             </div>
           </div>
         <% :results -> %>
@@ -202,6 +209,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
+              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
             </div>
           </div>
         <% end %>

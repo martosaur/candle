@@ -1,13 +1,38 @@
 <section class="hero">
   <div class="hero-body">
-    <div class="container has-text-centered">
+    <div class="columns has-text-centered">
+      <div class="column is-6 is-offset-3">
+        <%= f = form_for :player, Routes.player_path(@socket, :update), [method: "put"] %>
+            <div class="field is-horizontal">
+              <div class="field-label is-large">
+                <label class="label">Hello, </label>
+              </div>
+              <div class="field-body">
+                <div class="field has-addons">
+                  <div class="control">
+                    <%= text_input f, :name, [class: "input is-medium", value: @player.name] %>
+                  </div>
+                  <div class="control">
+                    <%= submit "Change", [class: "button is-medium"] %>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="hero">
+  <div class="hero-body">
+    <div class="columns has-text-centered">
       <div class="column is-6 is-offset-3">
         <h1 class="title">Create New Game</h1>
         <div class="box">
           <%= f = form_for :game, "#", [phx_submit: "create", class: ""] %>
             <div class="field has-addons">
-              <div class="control">
-                <%= text_input f, :name, [class: "input is-medium", placeholder: "Name"] %>
+              <div class="control is-expanded">
+                <%= text_input f, :name, [class: "input is-medium is-fullwidth", placeholder: "Name"] %>
               </div>
               <div class="control">
                 <%= submit "Create", [class: "button is-medium"] %>
