@@ -97,6 +97,8 @@ defmodule Candle.Game.Server do
 
   @impl true
   def init(state) do
+    set_time_bomb()
+
     {:ok, state}
   end
 
@@ -208,8 +210,23 @@ defmodule Candle.Game.Server do
   end
 
   @impl true
+  def handle_info(:timer_bomb, %State{clients: [], no_clients_counter: n} = state) when n >= 15 do
+    {:stop, :normal, state}
+  end
+
+  @impl true
+  def handle_info(:timer_bomb, state) do
+    set_time_bomb()
+    {:noreply, State.update_counter(state)}
+  end
+
+  @impl true
   def handle_continue(:push_update, state) do
     State.push_state_to_clients(state)
     {:noreply, state}
+  end
+
+  defp set_time_bomb() do
+    Process.send_after(self(), :timer_bomb, 60_000)
   end
 end

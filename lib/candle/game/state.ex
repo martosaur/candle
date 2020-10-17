@@ -11,7 +11,8 @@ defmodule Candle.Game.State do
             stage: :lobby,
             current_topic: nil,
             current_question: nil,
-            active_player_id: nil
+            active_player_id: nil,
+            no_clients_counter: 0
 
   @stages [:lobby, :starting, :pause, :question, :pending_answer, :results]
 
@@ -19,7 +20,7 @@ defmodule Candle.Game.State do
   alias Candle.Game.Player
 
   def join(state, player, pid) do
-    %{state | clients: [{player, pid} | state.clients]}
+    %{state | clients: [{player, pid} | state.clients], no_clients_counter: 0}
     |> update_lobby()
   end
 
@@ -150,5 +151,13 @@ defmodule Candle.Game.State do
         {_, pid} -> GenServer.cast(pid, {:server_update, state, false})
       end
     )
+  end
+
+  def update_counter(%__MODULE__{clients: []} = state) do
+    %{state | no_clients_counter: state.no_clients_counter + 1}
+  end
+
+  def update_counter(state) do
+    %{state | no_clients_counter: 0}
   end
 end
