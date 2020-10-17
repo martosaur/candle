@@ -87,8 +87,10 @@ defmodule Candle.Game.Server do
   end
 
   defp pid_by_game_id(game_id) do
-    [{pid, _}] = Registry.lookup(Candle.GameRegistry, game_id)
-    pid
+    case Registry.lookup(Candle.GameRegistry, game_id) do
+      [{pid, _}] -> pid
+      _ -> raise Candle.Game.GameNotFoundError, "Game #{game_id} does not exist"
+    end
   end
 
   # Server (callbacks)
