@@ -14,9 +14,7 @@
     <header class="">
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand has-background-grey-dark">
-          <a class="navbar-item has-text-grey-lighter" href="/">
-            Candle
-          </a>
+          <%= link "Candle", to: Routes.new_game_path(@conn, :index), class: "navbar-item has-text-grey-lighter" %>
         </div>
         <div class="navbar-menu">
           <div class="navbar-start">

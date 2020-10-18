@@ -94,7 +94,10 @@ defmodule CandleWeb.GameLive do
 
   @impl true
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket) do
-    {:noreply, redirect(socket, to: "/games/#{socket.assigns.game_state.game_id}")}
+    {:noreply,
+     redirect(socket,
+       to: Routes.game_path(CandleWeb.Endpoint, :show, socket.assigns.game_state.game_id)
+     )}
   end
 
   def handle_cast({:server_update, game_state, is_admin}, socket) do

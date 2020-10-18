@@ -14,7 +14,7 @@ defmodule CandleWeb.NewGameLive do
       {:ok, game_id} ->
         try do
           Candle.Game.Server.fetch_package(game_id)
-          {:noreply, redirect(socket, to: "/games/#{game_id}")}
+          {:noreply, redirect(socket, to: Routes.game_path(CandleWeb.Endpoint, :show, game_id))}
         rescue
           _ ->
             {:noreply, put_flash(socket, :error, "Could not fetch package for a game, try again")}

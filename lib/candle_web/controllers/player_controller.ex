@@ -5,6 +5,6 @@ defmodule CandleWeb.PlayerController do
     conn
     |> put_flash(:info, "Name changed")
     |> put_resp_cookie("_player_name", name)
-    |> redirect(to: "/")
+    |> redirect(to: Routes.new_game_path(CandleWeb.Endpoint, :index))
   end
 end
