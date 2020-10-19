@@ -1,5 +1,5 @@
 #!/bin/bash
-docker build -t candle-builder:latest .
+docker build -t candle-builder:latest --build-arg ADMIN_PASSWORD=$1 .
 
 mkdir -p ./_build/ubuntu/rel
 

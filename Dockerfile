@@ -13,6 +13,9 @@ RUN mix local.hex --force && \
 
 ENV MIX_ENV=prod
 
+ARG ADMIN_PASSWORD
+ENV ADMIN_PASSWORD=$ADMIN_PASSWORD
+
 # Fetch dependencies
 COPY mix.exs .
 COPY mix.lock .

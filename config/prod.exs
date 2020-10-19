@@ -17,6 +17,9 @@ config :candle, CandleWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :candle,
+  admin_password: System.fetch_env!("ADMIN_PASSWORD")
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
