@@ -15,11 +15,12 @@
     <header class="">
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand has-background-grey-dark">
-          <%= link "Candle", to: Routes.new_game_path(@conn, :index), class: "navbar-item has-text-grey-lighter" %>
+          <%= link "Candle", to: Routes.new_game_path(@conn, :index), class: "navbar-item has-text-white-ter" %>
         </div>
         <div class="navbar-menu">
           <div class="navbar-start">
             <%= link "New Game", to: Routes.new_game_path(@conn, :index), class: "navbar-item"%>
+            <%= link "About", to: Routes.page_path(@conn, :about), class: "navbar-item"%>
           </div>
         </div>
       </nav >

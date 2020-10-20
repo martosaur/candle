@@ -32,7 +32,7 @@
           <div class="hero">
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
-              <p class="subtitle">Add players from Lobby and start the game when ready</p>
+              <p class="subtitle">Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready</p>
               <button class="button is-danger" phx-click="start_game">Start Game</button>
             </div>
           </div>
@@ -40,7 +40,7 @@
           <div class="hero">
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
-              <p class="subtitle">Add players from Lobby and start the game when ready</p>
+              <p class="subtitle">Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready</p>
               <button class="button is-danger is-loading">Start Game</button>
             </div>
           </div>
@@ -88,7 +88,7 @@
                 <button class="button is-danger" phx-click="answer_incorrect">Answer is incorrect</button>
               </div>
               <div class="card-footer-item">
-                <button class="button no_answer" phx-click="no_answer">No answer</button>
+                <button class="button no_answer" phx-click="no_answer">Ignore</button>
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@
             <%= if Enum.any?(@game_state.players, fn player -> @player.id == player.id end) do %>
               <div class="card-footer">
                 <div class="card-footer-item">
-                  <button class="button is-danger is-large is-fullwidth" phx-click="clap">I know!</button>
+                  <button class="button is-danger is-large is-fullwidth" phx-click="clap" phx-window-keydown="clap" phx-key=" ">I know!</button>
                 </div>
               </div>
             <% end %>
@@ -228,9 +228,11 @@
                   <%= player.name %>#<%= player.id %>
                 </th>
                 <th>
-                  <button class="button is-small" phx-click="add_player" phx-value-player_id="<%= player.id %>">
-                    +
-                  </button>
+                  <%= if @player.secret == @game_state.admin.secret do %>
+                    <button class="button is-small" phx-click="add_player" phx-value-player_id="<%= player.id %>">
+                      +
+                    </button>
+                  <% end %>
                 </th>
                 </th>
               </tr>

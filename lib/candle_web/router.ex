@@ -17,7 +17,9 @@ defmodule CandleWeb.Router do
   end
 
   pipeline :admins_only do
-    plug :basic_auth, username: "admin", password: Application.fetch_env!(:candle, :admin_password)
+    plug :basic_auth,
+      username: "admin",
+      password: Application.fetch_env!(:candle, :admin_password)
   end
 
   scope "/", CandleWeb do
@@ -26,6 +28,7 @@ defmodule CandleWeb.Router do
     live "/", NewGameLive, :index
     put "/player", PlayerController, :update
     live "/games/:id", GameLive, :show
+    get "/about", PageController, :about
   end
 
   # Other scopes may use custom stacks.
