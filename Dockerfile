@@ -33,7 +33,7 @@ COPY assets/.babelrc ./assets/
 COPY assets/package-lock.json ./assets/
 COPY assets/package.json ./assets/
 COPY assets/webpack.config.js ./assets/
-COPY priv/gettext ./priv/
+COPY priv/gettext ./priv/gettext
 RUN npm install --prefix ./assets
 RUN npm run deploy --prefix ./assets
 
