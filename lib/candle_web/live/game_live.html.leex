@@ -32,16 +32,16 @@
           <div class="hero">
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
-              <p class="subtitle">Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready</p>
-              <button class="button is-danger" phx-click="start_game">Start Game</button>
+              <p class="subtitle"><%= gettext("Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready") %></p>
+              <button class="button is-danger" phx-click="start_game"><%= gettext("Start Game") %></button>
             </div>
           </div>
         <% :starting -> %>
           <div class="hero">
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
-              <p class="subtitle">Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready</p>
-              <button class="button is-danger is-loading">Start Game</button>
+              <p class="subtitle"><%= gettext("Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready") %></p>
+              <button class="button is-danger is-loading"><%= gettext("Start Game") %></button>
             </div>
           </div>
         <% :question -> %>
@@ -60,8 +60,8 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
-              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
-              <button class="button is-info" phx-click="next_question">Next Question</button>
+              <p class="subtitle"><%= gettext("Game host: ") %><strong><%= @game_state.admin.name %></strong></p>
+              <button class="button is-info" phx-click="next_question"><%= gettext("Next Question") %></button>
             </div>
           </div>
         <% :pending_answer -> %>
@@ -76,19 +76,19 @@
               </div>
               <div class="hero is-warning">
                 <div class="hero-body">
-                  <p class="title"><%= Enum.find(@game_state.players, fn p -> p.id == @game_state.active_player_id end) |> Map.get(:name) %>, your answer?</p>
+                  <p class="title"><%= Enum.find(@game_state.players, fn p -> p.id == @game_state.active_player_id end) |> Map.get(:name) %><%= gettext(", your answer?") %></p>
                 </div>
               </div>
             </div>
             <div class="card-footer">
               <div class="card-footer-item">
-                <button class="button is-success" phx-click="answer_correct">Answer is correct</button>
+                <button class="button is-success" phx-click="answer_correct"><%= gettext("Answer is correct") %></button>
               </div>
               <div class="card-footer-item">
-                <button class="button is-danger" phx-click="answer_incorrect">Answer is incorrect</button>
+                <button class="button is-danger" phx-click="answer_incorrect"><%= gettext("Answer is incorrect") %></button>
               </div>
               <div class="card-footer-item">
-                <button class="button no_answer" phx-click="no_answer">Ignore</button>
+                <button class="button no_answer" phx-click="no_answer"><%= gettext("Ignore") %></button>
               </div>
             </div>
           </div>
@@ -96,14 +96,14 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
-              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
-              <button class="button is-info" phx-click="next_question">Next Question</button>
+              <p class="subtitle"><%= gettext("Game host: ") %><strong><%= @game_state.admin.name %></strong></p>
+              <button class="button is-info" phx-click="next_question"><%= gettext("Next Question") %></button>
             </div>
           </div>
         <% :results -> %>
           <div class="hero is-success">
             <div class="hero-body">
-              <p class="title">Results</p>
+              <p class="title"><%= gettext("Results") %></p>
               <div class="content">
                 <div class="content">
                   <%= for player <- @game_state.players do %>
@@ -117,7 +117,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
-              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
+              <p class="subtitle"><%= gettext("Game host: ") %><strong><%= @game_state.admin.name %></strong></p>
             </div>
           </div>
         <% end %>
@@ -128,7 +128,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle">Host: <%= @game_state.admin.name %></p>
-              <p>Waiting for host to start the game...</p>
+              <p><%= gettext("Waiting for host to start the game...") %></p>
             </div>
           </div>
         <% :starting -> %>
@@ -136,7 +136,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle">Host: <%= @game_state.admin.name %></p>
-              <p>Game starting...</p>
+              <p><%= gettext("Game starting...") %></p>
             </div>
           </div>
         <% :question -> %>
@@ -146,13 +146,13 @@
             </div>
             <div class="card-content">
               <div class="content">
-                <p>Please listen to the question and clap whenever you feel ready</p>
+                <p><%= gettext("Please listen to the question and clap whenever you feel ready") %></p>
               </div>
             </div>
             <%= if Enum.any?(@game_state.players, fn player -> @player.id == player.id end) do %>
               <div class="card-footer">
                 <div class="card-footer-item">
-                  <button class="button is-danger is-large is-fullwidth" phx-click="clap" phx-window-keydown="clap" phx-key=" ">I know!</button>
+                  <button class="button is-danger is-large is-fullwidth" phx-click="clap" phx-window-keydown="clap" phx-key=" "><%= gettext("I know!") %></button>
                 </div>
               </div>
             <% end %>
@@ -161,7 +161,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
-              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
+              <p class="subtitle"><%= gettext("Game host: ") %><strong><%= @game_state.admin.name %></strong></p>
             </div>
           </div>
         <% :pending_answer -> %>
@@ -173,13 +173,13 @@
               <%= if @player.id == @game_state.active_player_id do %>
                 <div class="hero is-danger">
                   <div class="hero-body">
-                    <p class="title">Your answer</p>
+                    <p class="title"><%= gettext("Your answer") %></p>
                   </div>
                 </div>
               <% else %>
                 <div class="hero is-warning">
                   <div class="hero-body">
-                    <p class="title"><%= Enum.find(@game_state.players, fn p -> p.id == @game_state.active_player_id end) |> Map.get(:name) %>, your answer?</p>
+                    <p class="title"><%= Enum.find(@game_state.players, fn p -> p.id == @game_state.active_player_id end) |> Map.get(:name) %><%= gettext(", your answer?") %></p>
                   </div>
                 </div>
               <% end %>
@@ -189,13 +189,13 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
-              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
+              <p class="subtitle"><%= gettext("Game host: ") %><strong><%= @game_state.admin.name %></strong></p>
             </div>
           </div>
-        <% :results -> %>
+        <% :results -> %> -> %>
           <div class="hero is-success">
             <div class="hero-body">
-              <p class="title">Results</p>
+              <p class="title"><%= gettext("Results") %></p>
               <div class="content">
                 <div class="content">
                   <%= for player <- @game_state.players do %>
@@ -209,7 +209,7 @@
             <div class="hero-body">
               <h1 class="title"><%= @game_state.name %></h1>
               <p class="subtitle"><%= @game_state.package.name %></p>
-              <p class="subtitle">Game host: <strong><%= @game_state.admin.name %></strong></p>
+              <p class="subtitle"><%= gettext("Game host: ") %><strong><%= @game_state.admin.name %></strong></p>
             </div>
           </div>
         <% end %>
@@ -219,7 +219,7 @@
       <div class="container">
         <table class="table is-striped is-hoverable is-fullwidth">
           <thead>
-            <tr><th>Lobby</th><th></th></tr>
+            <tr><th><%= gettext("Lobby") %></th><th></th></tr>
           </thead>
           <tbody>
             <%= for player <- @game_state.lobby do %>
@@ -242,6 +242,6 @@
       </div>
     </div>
   <% else %>
-    Loading...
+    <%= gettext("Loading...") %>
   <% end %>
 </div>

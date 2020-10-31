@@ -5,7 +5,7 @@
         <%= f = form_for :player, Routes.player_path(@socket, :update), [method: "put"] %>
             <div class="field is-horizontal">
               <div class="field-label is-large">
-                <label class="label">Hello, </label>
+                <label class="label"><%= gettext("Hello, ") %></label>
               </div>
               <div class="field-body">
                 <div class="field has-addons">
@@ -13,7 +13,7 @@
                     <%= text_input f, :name, [class: "input is-medium", value: @player.name] %>
                   </div>
                   <div class="control">
-                    <%= submit "Change", [class: "button is-medium"] %>
+                    <%= submit gettext("Change"), [class: "button is-medium"] %>
                   </div>
                 </div>
               </div>
@@ -27,7 +27,7 @@
   <div class="hero-body">
     <div class="columns has-text-centered">
       <div class="column is-6 is-offset-3">
-        <h1 class="title">Create New Game</h1>
+        <h1 class="title"><%= gettext("Create New Game") %></h1>
         <div class="box">
           <%= f = form_for :game, "#", [phx_submit: "create", class: ""] %>
             <div class="field has-addons">
@@ -35,7 +35,7 @@
                 <%= text_input f, :name, [class: "input is-medium is-fullwidth", placeholder: "Name"] %>
               </div>
               <div class="control">
-                <%= submit "Create", [class: "button is-medium"] %>
+                <%= submit gettext("Create"), [class: "button is-medium"] %>
               </div>
             </div>
           </form>
@@ -49,14 +49,14 @@
     <div class="columns">
       <div class="column is-6 is-offset-3">
         <div class="content">
-          <h5 class="title is-5 has-text-white-ter">How to play: </h5>
+          <h5 class="title is-5 has-text-white-ter"><%= gettext("How to play: ") %></h5>
           <ol>
-            <li>Gather with your friends in voice chat</li>
-            <li>Set your name</li>
-            <li>As a host, create a game with any name</li>
-            <li>Send link to the game to your players and viewers</li>
-            <li>Select participating players from lobby</li>
-            <li>Start the game! Questions will be shown for you to read</li>
+            <li><%= gettext("Gather with your friends in voice chat") %></li>
+            <li><%= gettext("Set your name") %></li>
+            <li><%= gettext("As a host, create a game with any name") %></li>
+            <li><%= gettext("Send link to the game to your players and viewers") %></li>
+            <li><%= gettext("Select participating players from lobby") %></li>
+            <li><%= gettext("Start the game! Questions will be shown for you to read") %></li>
           </ol>
         </div>
       </div>

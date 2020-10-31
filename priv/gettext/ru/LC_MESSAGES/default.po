@@ -1,0 +1,260 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Plural-Forms: nplurals=3\n"
+
+#, elixir-format
+#: lib/candle_web/templates/layout/root.html.leex:23
+msgid "About"
+msgstr "О сервисе"
+
+#, elixir-format
+#: lib/candle_web/templates/layout/root.html.leex:22
+msgid "New Game"
+msgstr "Новая игра"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:79
+#: lib/candle_web/live/game_live.html.leex:182
+msgid ", your answer?"
+msgstr ", ваш ответ?"
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:4
+msgid "About this site"
+msgstr "О сервисе"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:85
+msgid "Answer is correct"
+msgstr "Правильно"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:88
+msgid "Answer is incorrect"
+msgstr "Неправильно"
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:56
+msgid "As a host, create a game with any name"
+msgstr "Пусть ведущий создаст игру с произвольным названием"
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:16
+msgid "Change"
+msgstr "Изменить"
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:38
+msgid "Create"
+msgstr "Создать"
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:30
+msgid "Create New Game"
+msgstr "Новая игра"
+
+#, elixir-format
+#: lib/candle_web/templates/layout/root.html.leex:32
+msgid "EN"
+msgstr "English"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:63
+#: lib/candle_web/live/game_live.html.leex:99 lib/candle_web/live/game_live.html.leex:120
+#: lib/candle_web/live/game_live.html.leex:164 lib/candle_web/live/game_live.html.leex:192
+#: lib/candle_web/live/game_live.html.leex:212
+msgid "Game host: "
+msgstr "Ведущий: "
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:139
+msgid "Game starting..."
+msgstr "Игра начинается..."
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:54
+msgid "Gather with your friends in voice chat"
+msgstr "Соберитесь с друзьями в голосовом чате"
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:8
+msgid "Hello, "
+msgstr "Привет, "
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:52
+msgid "How to play: "
+msgstr "Как играть: "
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:155
+msgid "I know!"
+msgstr "Кнопка"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:91
+msgid "Ignore"
+msgstr "Сбросить"
+
+#, elixir-format
+#: lib/candle_web/templates/layout/root.html.leex:28
+msgid "Language"
+msgstr "Язык"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:245
+msgid "Loading..."
+msgstr "Загрузка..."
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:64
+#: lib/candle_web/live/game_live.html.leex:100
+msgid "Next Question"
+msgstr "Следующий вопрос"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:149
+msgid "Please listen to the question and clap whenever you feel ready"
+msgstr "Слушайте ведущего и жмите на кнопку, когда захотите ответить"
+
+#, elixir-format
+#: lib/candle_web/templates/layout/root.html.leex:31
+msgid "RU"
+msgstr "Русский"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:106
+#: lib/candle_web/live/game_live.html.leex:198
+msgid "Results"
+msgstr "Результаты"
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:58
+msgid "Select participating players from lobby"
+msgstr "Выберите, кто будет играть, из списка подключившихся к игре"
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:57
+msgid "Send link to the game to your players and viewers"
+msgstr "Отправьте ссылку на игру игрокам и зрителям"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:35
+#: lib/candle_web/live/game_live.html.leex:43
+msgid "Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready"
+msgstr "Отправьте ссылку на эту страницу ваших игрокам и зрителям. Затем выберите, кто будет играть, и начинайте, как будете готовы."
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:55
+msgid "Set your name"
+msgstr "Укажите своё имя"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:36
+#: lib/candle_web/live/game_live.html.leex:44
+msgid "Start Game"
+msgstr "Начать игру"
+
+#, elixir-format
+#: lib/candle_web/live/new_game_live.html.leex:59
+msgid "Start the game! Questions will be shown for you to read"
+msgstr "Начать игру. Текст вопросов будет появляться на экране"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:131
+msgid "Waiting for host to start the game..."
+msgstr "Ждём, пока ведущий начнёт игру..."
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:176
+msgid "Your answer"
+msgstr "Ваш ответ"
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:25
+msgid "В конце игры отобразится счёт игроков."
+msgstr "В конце игры отобразится счёт игроков."
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:16
+msgid "Ведущий может создать игру. Игра автоматически возьмёт из базы случайный пакет на 6 тем с вопросами 2010+ года."
+msgstr "Ведущий может создать игру. Игра автоматически возьмёт из базы случайный пакет на 6 тем с вопросами 2010+ года."
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:6
+msgid "Всем привет. Этот сайт – демо-версия сервиса для игры в спортивную Свою Игру онлайн."
+msgstr "Всем привет. Этот сайт – демо-версия сервиса для игры в спортивную Свою Игру онлайн."
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:35
+msgid "Если вы погромист, код можно посмотреть здесь:"
+msgstr "Если вы погромист, код можно посмотреть здесь:"
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:15
+msgid "Изменить своё имя. Имя может быть любым, никакой регистрации не предусмотрено."
+msgstr "Изменить своё имя. Имя может быть любым, никакой регистрации не предусмотрено."
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:13
+msgid "Инструкция для любителей инструкций. На главной странице можно сделать:"
+msgstr "Инструкция для любителей инструкций. На главной странице можно сделать:"
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:8
+msgid "Как играть"
+msgstr "Как играть"
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:29
+msgid "Как к этому относиться"
+msgstr "Как к этому относиться"
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:24
+msgid "Когда игрок нажимает на кнопку (или на пробел), у ведущего есть три варианта действий: зачесть вопрос (+ очки), не засчитывать вопрос (- очки), сбросить кнопку ничего не делая (полезно, если играете без минусов)"
+msgstr "Когда игрок нажимает на кнопку (или на пробел), у ведущего есть три варианта действий: зачесть вопрос (+ очки), не засчитывать вопрос (- очки), сбросить кнопку ничего не делая (полезно, если играете без минусов)"
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:20
+msgid "На странице игры:"
+msgstr "На странице игры:"
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:27
+msgid "На этом пока всё."
+msgstr "На этом пока всё."
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:23
+msgid "После того как ведущий начнёт игру, ему будут показываться вопросы (с ответами), а игрокам – кнопка."
+msgstr "После того как ведущий начнёт игру, ему будут показываться вопросы (с ответами), а игрокам – кнопка."
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:10
+msgid "Предполагается, что желающие сыграть в Свою Игру собираются в голосом чате, а сайт берет на себя функцию кнопки, подсчёта очков и экрана ведущего."
+msgstr "Предполагается, что желающие сыграть в Свою Игру собираются в голосом чате, а сайт берет на себя функцию кнопки, подсчёта очков и экрана ведущего."
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:22
+msgid "Чтобы пригласить игроков, просто пришлите им ссылку на страницу. Все зашедшие в игру игроки будут видны в лобби. Ведущий может выбрать из лобби игроков, которые будут непосредственно играть. Все остальные присутствующие считаются зрителями"
+msgstr "Чтобы пригласить игроков, просто пришлите им ссылку на страницу. Все зашедшие в игру игроки будут видны в лобби. Ведущий может выбрать из лобби игроков, которые будут непосредственно играть. Все остальные присутствующие считаются зрителями"
+
+#, elixir-format
+#: lib/candle_web/templates/page/about.html.eex:31
+msgid "Я написал этот сервис, потому что я люблю писать сервисы. Писать сервисы, которыми пользуются – вообще кайф, поэтому судьба этого проекта целиком и полностью будет зависеть от востребованности сообществом.\n            Если вам эта штука нравится, если вы хотите ей пользоваться, если у вас есть ценный фидбек – смело пишите мне куда-нибудь, например в телеграм @martosaur. Если вам не близка идея онлайн-свояка, я вас не виню."
+msgstr "Я написал этот сервис, потому что я люблю писать сервисы. Писать сервисы, которыми пользуются – вообще кайф, поэтому судьба этого проекта целиком и полностью будет зависеть от востребованности сообществом.\n            Если вам эта штука нравится, если вы хотите ей пользоваться, если у вас есть ценный фидбек – смело пишите мне куда-нибудь, например в телеграм @martosaur. Если вам не близка идея онлайн-свояка, я вас не виню."
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:222
+msgid "Lobby"
+msgstr "Лобби"

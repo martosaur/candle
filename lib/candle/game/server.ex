@@ -143,7 +143,7 @@ defmodule Candle.Game.Server do
         {:start_game, admin_secret},
         %State{stage: :lobby, admin: %{secret: admin_secret}} = state
       ) do
-    Process.send_after(self(), {:"$gen_cast", {:next_question, admin_secret}}, 3_000)
+    GenServer.cast(self(), {:next_question, admin_secret})
     new_state = State.start_game(state)
 
     {:noreply, new_state, {:continue, :push_update}}

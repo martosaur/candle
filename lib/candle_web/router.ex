@@ -6,6 +6,7 @@ defmodule CandleWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug CandleWeb.Plugs.PlayerSession
+    plug CandleWeb.Plugs.SetLocale
     plug :fetch_live_flash
     plug :put_root_layout, {CandleWeb.LayoutView, :root}
     plug :protect_from_forgery

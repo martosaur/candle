@@ -3,7 +3,8 @@ defmodule CandleWeb.NewGameLive do
   require Logger
 
   @impl true
-  def mount(_params, %{"player" => player}, socket) do
+  def mount(_params, %{"player" => player, "locale" => locale}, socket) do
+    Gettext.put_locale(locale)
     {:ok, assign(socket, player: player)}
   end
 

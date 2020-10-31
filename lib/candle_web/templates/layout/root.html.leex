@@ -19,8 +19,19 @@
         </div>
         <div class="navbar-menu">
           <div class="navbar-start">
-            <%= link "New Game", to: Routes.new_game_path(@conn, :index), class: "navbar-item"%>
-            <%= link "About", to: Routes.page_path(@conn, :about), class: "navbar-item"%>
+            <%= link gettext("New Game"), to: Routes.new_game_path(@conn, :index), class: "navbar-item"%>
+            <%= link gettext("About"), to: Routes.page_path(@conn, :about), class: "navbar-item"%>
+          </div>
+          <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                <%= gettext("Language") %>
+              </a>
+              <div class="navbar-dropdown">
+                <%= link gettext("RU"), to: Routes.path(@conn, @conn.request_path <> "?locale=ru"), class: "navbar-item" %>
+                <%= link gettext("EN"), to: Routes.path(@conn, @conn.request_path <> "?locale=en"), class: "navbar-item" %>
+              </div>
+            </div>
           </div>
         </div>
       </nav >

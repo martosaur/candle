@@ -5,7 +5,7 @@ defmodule Candle.Package.Parser do
     {:ok, document} = Floki.parse_document(page)
 
     %Candle.Package{
-      name: "Random package",
+      name: "Случайный пакет",
       info: "",
       author: "",
       topics: extract_topics(document)

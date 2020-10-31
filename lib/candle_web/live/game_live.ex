@@ -4,7 +4,9 @@ defmodule CandleWeb.GameLive do
   require Logger
 
   @impl true
-  def mount(%{"id" => game_id}, %{"player" => player}, socket) do
+  def mount(%{"id" => game_id}, %{"player" => player, "locale" => locale}, socket) do
+    Gettext.put_locale(locale)
+
     game_id = String.to_integer(game_id)
     Server.join_game(game_id, player)
 
