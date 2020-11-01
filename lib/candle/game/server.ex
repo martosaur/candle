@@ -75,6 +75,15 @@ defmodule Candle.Game.Server do
     GenServer.cast(pid, {:no_answer, actor.secret})
   end
 
+  def change_answer(game_id, player_id, topic_name, question_reward, new_answer, actor) do
+    pid = pid_by_game_id(game_id)
+
+    GenServer.cast(
+      pid,
+      {:change_answer, player_id, topic_name, question_reward, new_answer, actor.secret}
+    )
+  end
+
   def fetch_package(game_id) do
     pid = pid_by_game_id(game_id)
     GenServer.call(pid, :fetch_package)
@@ -131,7 +140,7 @@ defmodule Candle.Game.Server do
   @impl true
   def handle_cast(
         {:remove_player, player_id, admin_secret},
-        %State{admin: %{secret: admin_secret}} = state
+        %State{admin: %{secret: admin_secret}, stage: :lobby} = state
       ) do
     new_state = State.remove_player(state, player_id)
 
@@ -191,6 +200,21 @@ defmodule Candle.Game.Server do
     new_state = State.no_answer(state)
 
     {:noreply, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast(
+        {:change_answer, player_id, topic_name, question_reward, new_answer, admin_secret},
+        %State{admin: %{secret: admin_secret}} = state
+      ) do
+    new_state = State.change_answer(state, player_id, topic_name, question_reward, new_answer)
+
+    {:noreply, new_state, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast({:change_answer, _, _, _, _, _}, state) do
+    {:noreply, state}
   end
 
   @impl true

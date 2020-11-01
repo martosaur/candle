@@ -94,6 +94,37 @@ defmodule CandleWeb.GameLive do
     {:noreply, socket}
   end
 
+  def handle_event(
+        "change_answer",
+        %{
+          "player_id" => player_id,
+          "topic_name" => topic_name,
+          "question_reward" => question_reward,
+          "new_answer" => new_answer
+        },
+        socket
+      ) do
+    new_answer =
+      case new_answer do
+        "true" -> true
+        "false" -> false
+        _ -> nil
+      end
+
+    question_reward = String.to_integer(question_reward)
+
+    Server.change_answer(
+      socket.assigns.game_state.game_id,
+      player_id,
+      topic_name,
+      question_reward,
+      new_answer,
+      socket.assigns.player
+    )
+
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket) do
     {:noreply,

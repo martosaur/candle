@@ -12,12 +12,13 @@ defmodule Candle.Game.State do
             current_topic: nil,
             current_question: nil,
             active_player_id: nil,
-            no_clients_counter: 0
+            no_clients_counter: 0,
+            answersheet: nil
 
   @stages [:lobby, :starting, :pause, :question, :pending_answer, :results]
 
   alias Candle.Package.{Topic}
-  alias Candle.Game.Player
+  alias Candle.Game.{Player, Answersheet}
 
   def join(state, player, pid) do
     %{state | clients: [{player, pid} | state.clients], no_clients_counter: 0}
@@ -48,7 +49,7 @@ defmodule Candle.Game.State do
   end
 
   def start_game(%__MODULE__{stage: :lobby} = state) do
-    %{state | stage: :starting}
+    %{state | stage: :starting, answersheet: Answersheet.init(state.players, state.package)}
   end
 
   def remove_player(state, player_id) do
@@ -103,16 +104,25 @@ defmodule Candle.Game.State do
         %__MODULE__{
           players: players,
           active_player_id: player_id,
-          current_question: %{reward: reward}
+          current_question: question,
+          current_topic: topic,
+          answersheet: answersheet
         } = state
       ) do
+    new_answersheet =
+      Answersheet.add_answer(answersheet, topic.name, question.reward, player_id, true)
+
     updated_players =
       Enum.map(players, fn
-        %Player{id: ^player_id} = p -> %{p | score: p.score + reward}
-        p -> p
+        %Player{id: ^player_id} = p ->
+          %{p | score: Answersheet.get_score(new_answersheet, player_id)}
+
+        p ->
+          p
       end)
 
     state
+    |> Map.put(:answersheet, new_answersheet)
     |> Map.put(:players, updated_players)
     |> Map.put(:active_player_id, nil)
     |> next_question()
@@ -122,16 +132,25 @@ defmodule Candle.Game.State do
         %__MODULE__{
           players: players,
           active_player_id: player_id,
-          current_question: %{reward: reward}
+          current_question: question,
+          current_topic: topic,
+          answersheet: answersheet
         } = state
       ) do
+    new_answersheet =
+      Answersheet.add_answer(answersheet, topic.name, question.reward, player_id, false)
+
     updated_players =
       Enum.map(players, fn
-        %Player{id: ^player_id} = p -> %{p | score: p.score - reward}
-        p -> p
+        %Player{id: ^player_id} = p ->
+          %{p | score: Answersheet.get_score(new_answersheet, player_id)}
+
+        p ->
+          p
       end)
 
     state
+    |> Map.put(:answersheet, new_answersheet)
     |> Map.put(:players, updated_players)
     |> Map.put(:active_player_id, nil)
     |> Map.put(:stage, :question)
@@ -141,6 +160,39 @@ defmodule Candle.Game.State do
     state
     |> Map.put(:active_player_id, nil)
     |> Map.put(:stage, :question)
+  end
+
+  def change_answer(
+        %__MODULE__{
+          players: players,
+          answersheet: answersheet
+        } = state,
+        player_id,
+        topic_name,
+        question_reward,
+        new_answer
+      ) do
+    new_answersheet =
+      Answersheet.add_answer(
+        answersheet,
+        topic_name,
+        question_reward,
+        player_id,
+        new_answer
+      )
+
+    updated_players =
+      Enum.map(players, fn
+        %Player{id: ^player_id} = p ->
+          %{p | score: Answersheet.get_score(new_answersheet, player_id)}
+
+        p ->
+          p
+      end)
+
+    state
+    |> Map.put(:answersheet, new_answersheet)
+    |> Map.put(:players, updated_players)
   end
 
   def push_state_to_clients(%__MODULE__{admin: %{id: admin_id}} = state) do
