@@ -2,12 +2,13 @@ defmodule Candle.Game.Server do
   use GenServer
 
   require Logger
+  import CandleWeb.Gettext
 
   alias Candle.Game.State
 
   # Client
   def new(admin, "") do
-    new(admin, "New Game")
+    new(admin, gettext("New Game"))
   end
 
   def new(admin, name) do
@@ -18,8 +19,7 @@ defmodule Candle.Game.Server do
       %State{
         game_id: new_game_id(),
         admin: admin,
-        name: name,
-        package: Candle.Package.get_test_package()
+        name: name
       },
       name: {:via, Registry, {Candle.GameRegistry, game_id}}
     )
@@ -84,9 +84,19 @@ defmodule Candle.Game.Server do
     )
   end
 
-  def fetch_package(game_id) do
+  def fetch_random_package(game_id, actor) do
     pid = pid_by_game_id(game_id)
-    GenServer.call(pid, :fetch_package)
+    GenServer.cast(pid, {:fetch_random_package, actor.secret})
+  end
+
+  def fetch_empty_package(game_id, number_of_topics, actor) do
+    pid = pid_by_game_id(game_id)
+    GenServer.cast(pid, {:fetch_empty_package, number_of_topics, actor.secret})
+  end
+
+  def set_locale(game_id, locale) do
+    pid = pid_by_game_id(game_id)
+    GenServer.call(pid, {:set_locale, locale})
   end
 
   defp new_game_id() do
@@ -119,12 +129,31 @@ defmodule Candle.Game.Server do
   end
 
   @impl true
-  def handle_call(:fetch_package, _, state) do
+  def handle_call({:set_locale, locale}, _, state) do
+    Gettext.put_locale(locale)
+    {:reply, state, state}
+  end
+
+  @impl true
+  def handle_cast(
+        {:fetch_random_package, admin_secret},
+        %State{admin: %{secret: admin_secret}, stage: :lobby} = state
+      ) do
     package =
       Candle.Package.Fetcher.fetch_random_package()
       |> Candle.Package.Parser.html_to_package()
 
-    {:reply, :ok, %{state | package: package}, {:continue, :push_update}}
+    {:noreply, %{state | package: package}, {:continue, :push_update}}
+  end
+
+  @impl true
+  def handle_cast(
+        {:fetch_empty_package, number_of_topics, admin_secret},
+        %State{admin: %{secret: admin_secret}, stage: :lobby} = state
+      ) do
+    package = Candle.Package.get_empty_package(number_of_topics)
+
+    {:noreply, %{state | package: package}, {:continue, :push_update}}
   end
 
   @impl true

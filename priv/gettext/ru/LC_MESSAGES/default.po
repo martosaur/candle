@@ -17,13 +17,14 @@ msgid "About"
 msgstr "О сервисе"
 
 #, elixir-format
+#: lib/candle/game/server.ex:11
 #: lib/candle_web/templates/layout/root.html.leex:22
 msgid "New Game"
 msgstr "Новая игра"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:79
-#: lib/candle_web/live/game_live.html.leex:182
+#: lib/candle_web/live/game_live.html.leex:204
+#: lib/candle_web/live/game_live.html.leex:422
 msgid ", your answer?"
 msgstr ", ваш ответ?"
 
@@ -33,12 +34,12 @@ msgid "About this site"
 msgstr "О сервисе"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:85
+#: lib/candle_web/live/game_live.html.leex:210
 msgid "Answer is correct"
 msgstr "Правильно"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:88
+#: lib/candle_web/live/game_live.html.leex:213
 msgid "Answer is incorrect"
 msgstr "Неправильно"
 
@@ -68,15 +69,15 @@ msgid "EN"
 msgstr "English"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:63
-#: lib/candle_web/live/game_live.html.leex:99 lib/candle_web/live/game_live.html.leex:120
-#: lib/candle_web/live/game_live.html.leex:164 lib/candle_web/live/game_live.html.leex:192
-#: lib/candle_web/live/game_live.html.leex:212
+#: lib/candle_web/live/game_live.html.leex:165
+#: lib/candle_web/live/game_live.html.leex:224 lib/candle_web/live/game_live.html.leex:268
+#: lib/candle_web/live/game_live.html.leex:381 lib/candle_web/live/game_live.html.leex:432
+#: lib/candle_web/live/game_live.html.leex:475
 msgid "Game host: "
 msgstr "Ведущий: "
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:139
+#: lib/candle_web/live/game_live.html.leex:333
 msgid "Game starting..."
 msgstr "Игра начинается..."
 
@@ -96,12 +97,12 @@ msgid "How to play: "
 msgstr "Как играть: "
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:155
+#: lib/candle_web/live/game_live.html.leex:372
 msgid "I know!"
 msgstr "Кнопка"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:91
+#: lib/candle_web/live/game_live.html.leex:216
 msgid "Ignore"
 msgstr "Сбросить"
 
@@ -111,18 +112,18 @@ msgid "Language"
 msgstr "Язык"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:245
+#: lib/candle_web/live/game_live.html.leex:567
 msgid "Loading..."
 msgstr "Загрузка..."
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:64
-#: lib/candle_web/live/game_live.html.leex:100
+#: lib/candle_web/live/game_live.html.leex:166
+#: lib/candle_web/live/game_live.html.leex:225
 msgid "Next Question"
 msgstr "Следующий вопрос"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:149
+#: lib/candle_web/live/game_live.html.leex:366
 msgid "Please listen to the question and clap whenever you feel ready"
 msgstr "Слушайте ведущего и жмите на кнопку, когда захотите ответить"
 
@@ -132,8 +133,8 @@ msgid "RU"
 msgstr "Русский"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:106
-#: lib/candle_web/live/game_live.html.leex:198
+#: lib/candle_web/live/game_live.html.leex:254
+#: lib/candle_web/live/game_live.html.leex:461
 msgid "Results"
 msgstr "Результаты"
 
@@ -148,8 +149,8 @@ msgid "Send link to the game to your players and viewers"
 msgstr "Отправьте ссылку на игру игрокам и зрителям"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:35
-#: lib/candle_web/live/game_live.html.leex:43
+#: lib/candle_web/live/game_live.html.leex:37
+#: lib/candle_web/live/game_live.html.leex:63 lib/candle_web/live/game_live.html.leex:122
 msgid "Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready"
 msgstr "Отправьте ссылку на эту страницу ваших игрокам и зрителям. Затем выберите, кто будет играть, и начинайте, как будете готовы."
 
@@ -159,8 +160,8 @@ msgid "Set your name"
 msgstr "Укажите своё имя"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:36
-#: lib/candle_web/live/game_live.html.leex:44
+#: lib/candle_web/live/game_live.html.leex:53
+#: lib/candle_web/live/game_live.html.leex:123
 msgid "Start Game"
 msgstr "Начать игру"
 
@@ -170,12 +171,12 @@ msgid "Start the game! Questions will be shown for you to read"
 msgstr "Начать игру. Текст вопросов будет появляться на экране"
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:131
+#: lib/candle_web/live/game_live.html.leex:302
 msgid "Waiting for host to start the game..."
 msgstr "Ждём, пока ведущий начнёт игру..."
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:176
+#: lib/candle_web/live/game_live.html.leex:416
 msgid "Your answer"
 msgstr "Ваш ответ"
 
@@ -255,6 +256,48 @@ msgid "Я написал этот сервис, потому что я любл�
 msgstr "Я написал этот сервис, потому что я люблю писать сервисы. Писать сервисы, которыми пользуются – вообще кайф, поэтому судьба этого проекта целиком и полностью будет зависеть от востребованности сообществом.\n            Если вам эта штука нравится, если вы хотите ей пользоваться, если у вас есть ценный фидбек – смело пишите мне куда-нибудь, например в телеграм @martosaur. Если вам не близка идея онлайн-свояка, я вас не виню."
 
 #, elixir-format
-#: lib/candle_web/live/game_live.html.leex:222
+#: lib/candle_web/live/game_live.html.leex:485
 msgid "Lobby"
 msgstr "Лобби"
+
+#, elixir-format, fuzzy
+#: lib/candle_web/live/game_live.html.leex:82
+msgid "Create package"
+msgstr "Создать пакет"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:56
+#: lib/candle_web/live/game_live.html.leex:66 lib/candle_web/live/game_live.html.leex:91
+msgid "Custom package"
+msgstr "Свой пакет"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.ex:158
+msgid "Number of topics is not a number"
+msgstr "Количество тем не похоже на число"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:74
+msgid "Number of topics:"
+msgstr "Количество тем:"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:55
+#: lib/candle_web/live/game_live.html.leex:90
+msgid "Random package"
+msgstr "Случайный пакет"
+
+#, elixir-format
+#: lib/candle/package/package.ex:135
+msgid "Topic %{topic_num}"
+msgstr "Тема %{topic_num}"
+
+#, elixir-format
+#: lib/candle/package/package.ex:167 lib/candle/package/package.ex:168
+msgid "custom package"
+msgstr "Свой пакет"
+
+#, elixir-format
+#: lib/candle_web/live/game_live.html.leex:70
+msgid "with custom package you may play empty package with arbitrary number of topics but you'll have to read questions from somewhere else."
+msgstr "Свой пакет позволяет сыграть произвольное количество тем, однако вопросы придётся читать из своего источника."

@@ -13,13 +13,8 @@ defmodule CandleWeb.NewGameLive do
     Candle.Game.Server.new(socket.assigns.player, name)
     |> case do
       {:ok, game_id} ->
-        try do
-          Candle.Game.Server.fetch_package(game_id)
-          {:noreply, redirect(socket, to: Routes.game_path(CandleWeb.Endpoint, :show, game_id))}
-        rescue
-          _ ->
-            {:noreply, put_flash(socket, :error, "Could not fetch package for a game, try again")}
-        end
+        Candle.Game.Server.set_locale(game_id, Gettext.get_locale())
+        {:noreply, redirect(socket, to: Routes.game_path(CandleWeb.Endpoint, :show, game_id))}
 
       {:error, _reason} ->
         {:noreply, put_flash(socket, :error, "Could not create game")}

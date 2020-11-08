@@ -15,7 +15,8 @@ defmodule CandleWeb.GameLive do
        socket,
        game_state: nil,
        player: player,
-       is_admin: false
+       is_admin: false,
+       custom_package: nil
      )}
   end
 
@@ -123,6 +124,43 @@ defmodule CandleWeb.GameLive do
     )
 
     {:noreply, socket}
+  end
+
+  def handle_event("fetch_random_package", _, socket) do
+    Server.fetch_random_package(
+      socket.assigns.game_state.game_id,
+      socket.assigns.player
+    )
+
+    {:noreply, assign(socket, custom_package: nil)}
+  end
+
+  def handle_event("custom_package_start", _, socket) do
+    {:noreply, assign(socket, custom_package: :in_progress)}
+  end
+
+  def handle_event("custom_package_cancel", _, socket) do
+    {:noreply, assign(socket, custom_package: nil)}
+  end
+
+  def handle_event(
+        "create_custom_package",
+        %{"custom_package" => %{"number_of_topics" => topics}},
+        socket
+      ) do
+    case Integer.parse(topics) do
+      {number, ""} ->
+        Server.fetch_empty_package(
+          socket.assigns.game_state.game_id,
+          number,
+          socket.assigns.player
+        )
+
+        {:noreply, assign(socket, custom_package: nil)}
+
+      _ ->
+        {:noreply, put_flash(socket, :error, gettext("Number of topics is not a number"))}
+    end
   end
 
   @impl true

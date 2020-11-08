@@ -29,13 +29,69 @@
               </div>
             </div>
           </div>
-          <div class="hero">
-            <div class="hero-body">
-              <h1 class="title"><%= @game_state.name %></h1>
-              <p class="subtitle"><%= gettext("Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready") %></p>
-              <button class="button is-danger" phx-click="start_game"><%= gettext("Start Game") %></button>
-            </div>
-          </div>
+          <%= case @custom_package do %>
+            <% nil -> %>
+              <div class="hero">
+                <div class="hero-body">
+                  <h1 class="title"><%= @game_state.name %></h1>
+                  <p class="subtitle"><%= gettext("Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready") %></p>
+                  <%= if @game_state.package do %>
+                    <article class="message">
+                      <div class="message-header">
+                        <p><%= @game_state.package.name %></p>
+                      </div>
+                      <div class="message-body">
+                        <ol>
+                          <%= for topic <- @game_state.package.topics do %>
+                            <li>
+                              <%= topic.name %>
+                            </li>
+                          <% end %>
+                        </ol>
+                      </div>
+                    </article>
+                    <button class="button is-danger" phx-click="start_game"><%= gettext("Start Game") %></button>
+                  <% end %>
+                  <button class="button is-link" phx-click="fetch_random_package"><%= gettext("Random package") %></button>
+                  <button class="button is-link" phx-click="custom_package_start"><%= gettext("Custom package") %></button>
+                </div>
+              </div>
+            <% :in_progress -> %>
+              <div class="hero">
+                <div class="hero-body">
+                  <h1 class="title"><%= @game_state.name %></h1>
+                  <p class="subtitle"><%= gettext("Send link to this page to your players and viewers. Then select participating players from Lobby and start the game when ready") %></p>
+                  <article class="message">
+                    <div class="message-header">
+                      <p><%= gettext("Custom package") %></p>
+                      <button class="delete" phx-click="custom_package_cancel"></button>
+                    </div>
+                    <div class="message-body">
+                      <p><%= gettext("with custom package you may play empty package with arbitrary number of topics but you'll have to read questions from somewhere else.") %></p>
+                      <%= f = form_for :custom_package, "#", [phx_submit: "create_custom_package", class: ""] %>
+                        <div class="field is-horizontal">
+                          <div class="field-label is-normal">
+                            <label class="label"><%= gettext("Number of topics:") %></label>
+                          </div>
+                          <div class="field-body">
+                            <div class="field has-addons">
+                              <div class="control">
+                                <%= text_input f, :number_of_topics, [class: "input", type: "text", value: "6"] %>
+                              </div>
+                              <div class="control">
+                                <%= submit gettext("Create package"), [class: "button is-link"] %>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </article>
+                  <button class="button is-link" phx-click="fetch_random_package"><%= gettext("Random package") %></button>
+                  <button class="button is-link" phx-click="custom_package_start"><%= gettext("Custom package") %></button>
+                </div>
+              </div>
+          <% end %>
         <% :starting -> %>
           <div class="hero">
             <div class="hero-body">

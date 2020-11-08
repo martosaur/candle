@@ -6,6 +6,7 @@ defmodule Candle.Package do
 
   alias Candle.Package.Topic
   alias Candle.Package.Question
+  import CandleWeb.Gettext
 
   def get_test_package() do
     %__MODULE__{
@@ -124,6 +125,49 @@ defmodule Candle.Package do
           ]
         }
       ]
+    }
+  end
+
+  def get_empty_package(questions \\ 6) do
+    questions =
+      for i <- 1..questions do
+        %Topic{
+          name: gettext("Topic %{topic_num}", topic_num: i),
+          questions: [
+            %Question{
+              text: "",
+              answer: "",
+              reward: 10
+            },
+            %Question{
+              text: "",
+              answer: "",
+              reward: 20
+            },
+            %Question{
+              text: "",
+              answer: "",
+              reward: 30
+            },
+            %Question{
+              text: "",
+              answer: "",
+              reward: 40
+            },
+            %Question{
+              text: "",
+              answer: "",
+              reward: 50
+            }
+          ]
+        }
+      end
+
+    %__MODULE__{
+      name: gettext("custom package"),
+      info: gettext("custom package"),
+      author: "",
+      topics: questions
     }
   end
 end
