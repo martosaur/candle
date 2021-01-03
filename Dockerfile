@@ -1,4 +1,4 @@
-FROM hexpm/elixir:1.11.1-erlang-23.1.1-ubuntu-bionic-20200630
+FROM hexpm/elixir:1.11.1-erlang-23.1.1-ubuntu-focal-20200703
 
 RUN apt-get update && apt-get -y install curl
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
